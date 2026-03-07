@@ -1,14 +1,21 @@
-class Solution:
-    def sortColors(self, nums: List[int]) -> None:
+class Solution(object):
+    def sortColors(self, nums):
         """
-        Do not return anything, modify nums in-place instead.
+        :type nums: List[int]
+        :rtype: None Do not return anything, modify nums in-place instead.
         """
-        counts = [0,0,0]
-
+        #count hou many of each then iterate through list to place them in order
+        #= o(n)
+        count = [0,0,0]
         for i in range(len(nums)):
-            counts[nums[i]] +=1
+            if nums[i] == 0:
+                count[0] +=1
+            elif nums[i] == 1:
+                count[1] +=1
+            else :
+                count[2] +=1
 
-        r,w,b = counts
-        nums[:r] = [0] * r
-        nums[r:r+w] = [1] * w
-        nums[r+w:] = [2] * b
+       
+        nums[0:count[0]] = count[0] * [0]
+        nums[count[0]:count[1]+count[0]] = count[1] * [1]
+        nums[count[1]+count[0]:] = count[2] * [2]
