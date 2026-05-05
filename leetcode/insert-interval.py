@@ -5,48 +5,32 @@ class Solution(object):
         :type newInterval: List[int]
         :rtype: List[List[int]]
         """
-
-        #unclean chud solution 
-        
-        merged =[]
-        #loop until newInterval addable
-        inserted = False
-
+        newIntervals =[]
         i=0
-        while i<len(intervals):
-            #addable before
-            if newInterval[0] <= intervals[i][0]:
-                if newInterval[1]<intervals[i][0]:
-                    #add both
-                    merged.append(newInterval)
-                    merged.append(intervals[i])
-                    inserted = True
-                    break
-
-                else:
-                    merged.append([newInterval[0], max(newInterval[1], intervals[i][1])])
-                    inserted = True
-                    break
-            elif newInterval[0] <= intervals[i][1]:
-                merged.append([intervals[i][0], max(newInterval[1], intervals[i][1])])
-                inserted = True
-                break
-            else:
-                merged.append(intervals[i])
-                i+=1
-        
-        if inserted == False:
-            merged.append(newInterval)   
-
-
-        start = merged[-1][1]
-        i+=1
-        #loop merging next intervals until no more
-        while i<len(intervals):
-            if intervals[i][0] <= start:
-                merged[-1][1] = max(start, intervals[i][1])
-                start = merged[-1][1]
-            else:
-                merged.append(intervals[i])
+        while i< len(intervals) and newInterval[0] > intervals[i][1]:
+            newIntervals.append(intervals[i])
             i+=1
-        return merged
+        #add edge case if made to end of list here
+        if i == len(intervals):
+            newIntervals.append(newInterval)
+            return newIntervals
+
+        print(newIntervals)
+        if newInterval[1] < intervals[i][0]:
+                #add newint b4
+            newIntervals.append(newInterval)
+        else:
+                
+            intervals[i][0] = min(intervals[i][0], newInterval[0])
+            intervals[i][1] = max(intervals[i][1], newInterval[1])
+            newIntervals.append(intervals[i])
+
+        print(newIntervals)
+        while i < len(intervals):
+            if newIntervals[-1][1] >= intervals[i][0]:
+                newIntervals[-1][1] = max(newIntervals[-1][1], intervals[i][1])
+            else:
+                newIntervals.append(intervals[i])
+            i+=1
+        
+        return newIntervals
