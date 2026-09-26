@@ -1,19 +1,21 @@
-class Solution(object):
-    def productExceptSelf(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: List[int]
-        """
+class Solution:
+    def productExceptSelf(self, nums: list[int]) -> list[int]:
+        result = []
+        prefix = [1,1,2,6,24]
+        suffix = [24,24,12,4,1]
+
+        # create suffix & prefix
+        prefix = [1]
+        for i in range(len(nums)):
+            prefix.append(prefix[-1] * nums[i])
+
+        suffix = [1] * len(nums)
+        for i in range(len(nums)-2, -1, -1):
+            suffix[i] = nums[i+1] * suffix[i+1]
+        
+        result = []
       
+        for i in range(len(nums)):
+            result.append(prefix[i] * suffix [i])
 
-        prefix =[1]
-        for i in range(len(nums)-1):
-            prefix.append(prefix[-1]*nums[i])
-
-        suffix =[1]*(len(nums))
-        for i in range(len(nums)-2,-1,-1):
-            suffix[i] = suffix[i+1]*nums[i+1]
-
-        for i in range(len(suffix)):
-            suffix[i] = prefix[i]*suffix[i]
-        return suffix
+        return result
