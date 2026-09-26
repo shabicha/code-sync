@@ -1,9 +1,5 @@
 class Solution:
     def productExceptSelf(self, nums: list[int]) -> list[int]:
-        result = []
-        prefix = [1,1,2,6,24]
-        suffix = [24,24,12,4,1]
-
         # create suffix & prefix
         prefix = [1]
         for i in range(len(nums)):
