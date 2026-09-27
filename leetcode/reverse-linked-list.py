@@ -9,9 +9,12 @@ class Solution:
         cur = head
         prev= None
         while cur:
+            #save next element 
             saved = cur.next
+            #reroute cur -> prev
             cur.next = prev
 
+            #reset values
             prev=cur
             cur = saved
             
