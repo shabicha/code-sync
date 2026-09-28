@@ -1,78 +1,64 @@
-class Node:
+class ListNode():
     def __init__(self, key, value):
-        self.key = key
         self.value = value
-        self.prev = None
+        self.key = key
         self.next = None
+        self.prev = None
 
-class LRUCache(object):
-   
+class LRUCache:
 
-    def __init__(self, capacity):
-        """
-        :type capacity: int
-        """
-        self.capacity = capacity 
-        self.cache = {} #key = node
-        self.head = Node(0,0)
-        self.tail=Node(0,0)
-        self.head.next = self.tail
-        self.tail.prev=self.head
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.hashMap = {} # reference to key: ListNode(key, value)
+        self.head = ListNode(0,0)
+        self.curr = self.head
+        self.length = 0
+
+ 
+    def remove(self, node):
+        node.prev.next = node.next
+        if node.next: 
+            node.next.prev = node.prev
+        else:
+            self.curr = node.prev
+
+    def add(self,node):
+        self.curr.next = node
+        node.next = None
+        node.prev = self.curr
+        self.curr = node
+
+    def get(self, key: int) -> int:
+        #return key val else -1
+        if key in self.hashMap:
+            #remove
+            node = self.hashMap[key]
+            self.remove(node)
+            #add
+            self.add(node)
+            return self.hashMap[key].value
+        else:
+            return -1 
+
+    def put(self, key: int, value: int) -> None:
+        #remove existing
+        node = ListNode(key,value)
+        if key in self.hashMap:
+            self.length-=1
+            self.remove(self.hashMap[key])
+    
+        #if over capacity remove first node
+        if self.length == self.capacity:            
+            del self.hashMap[self.head.next.key]
+            self.remove(self.head.next)
+            self.length-=1
+            
+        self.add(node)
+        self.length +=1
+        self.hashMap[key] = node
+
 
         
-
-    def get(self, key):
-        """
-        :type key: int
-        :rtype: int
-        """
-        if key in self.cache:
-            #resort linkedlist
-            node = self.cache[key]
-
-
-            self.remove(node)
-            self.add(node)
-
-            return node.value
-
-        return -1
-
-    def remove(self, node):
-        node.prev.next=node.next
-        node.next.prev=node.prev
-    
-    def add(self, node):
-        saveNode = self.head.next
-        saveNode.prev = node
-        self.head.next = node
-
-        node.prev = self.head
-        node.next = saveNode
-
-    def put(self, key, value):
-        """
-        :type key: int
-        :type value: int
-        :rtype: None
-        """
-        if key in self.cache:
-            node = self.cache[key]
-            self.cache[key].value = value
-            self.remove(node)
-            self.add(node)
-        else:
-
-            node = Node(key,value)
-            self.cache[key] = node
-            self.add(node)
-            if len(self.cache)>self.capacity:
-                tailed=self.tail.prev
-                self.remove(tailed)
-                del self.cache[tailed.key]
-                
-
-            
         
 
 
