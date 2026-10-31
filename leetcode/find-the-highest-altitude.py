@@ -1,7 +1,6 @@
 class Solution:
     def largestAltitude(self, gain: list[int]) -> int:
-        [-5,1,5,0,-7]
-        [0,-5,-4,1,1,-6]
+
         maxAlt = 0
         start = 0
         for i in range(len(gain)):
