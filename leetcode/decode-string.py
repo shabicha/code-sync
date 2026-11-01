@@ -27,3 +27,5 @@ class Solution:
                 stack.append(s[i])
             i+=1
         return ''.join(stack)
+        #time = O(n+N^2)
+        #space = O(n+N)
